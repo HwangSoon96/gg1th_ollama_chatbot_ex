@@ -1,0 +1,111 @@
+.chat-window {
+  position: relative;
+  flex: 1;
+  min-height: 0; /* flex 자식이 내용에 밀려 넘치지 않게 */
+  display: flex;
+}
+
+.chat-window__viewport {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 키보드로 대화를 스크롤할 수 있어야 한다.
+   포커스 링이 뷰포트 전체를 감싸면 시끄러우므로 안쪽에 얇게 준다 */
+.chat-window__viewport:focus-visible {
+  outline: 2px solid var(--amber-edge);
+  outline-offset: -2px;
+}
+
+.chat-window__jump {
+  position: absolute;
+  bottom: var(--s4);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s2) var(--s3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-control);
+  background: var(--raised);
+  font-size: var(--t-meta);
+  font-weight: 600;
+  color: var(--ink-soft);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 18%);
+  transition: color var(--fast) var(--ease), border-color var(--fast) var(--ease);
+  /* 불끑 나타나면 무엇이 생겼는지 몰라 눈만 끈다 */
+  animation: jump-in 200ms var(--ease);
+}
+
+@keyframes jump-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+}
+
+.chat-window__jump:hover {
+  color: var(--amber);
+  border-color: var(--amber-edge);
+}
+
+/* 위로 올려 읽는 동안 답변이 도착했을 때.
+   평소와 같은 버튼이면 "내려가기"와 "답이 왔다"를 구분할 수 없다.
+   채워서 눈에 띄게 하고 한 번 올라오게 한다 */
+.chat-window__jump--new {
+  background: var(--amber-fill);
+  border-color: var(--amber-fill);
+  color: var(--on-amber);
+  box-shadow: 0 4px 20px var(--amber-edge);
+  animation: jump-arrive 320ms var(--ease);
+}
+
+.chat-window__jump--new:hover {
+  color: var(--on-amber);
+  border-color: var(--amber-fill);
+  filter: brightness(1.08);
+}
+
+/* 살아있는 알림임을 말하는 점 */
+.chat-window__jump-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--on-amber);
+  animation: jump-dot 1.2s var(--ease) infinite;
+}
+
+@keyframes jump-arrive {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(0.94);
+  }
+}
+
+@keyframes jump-dot {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 이 블록은 반드시 파일 끝에 있어야 한다.
+   위에 두면 뒤에 오는 animation 선언에 덮여쓰여 꿼다(같은 특이도면 나중 규칙이 이긴다). */
+@media (prefers-reduced-motion: reduce) {
+  .chat-window__jump,
+  .chat-window__jump--new {
+    animation: none;
+  }
+
+  /* 깜빡임을 꺼도 점은 보여야 한다 */
+  .chat-window__jump-dot {
+    animation: none;
+    opacity: 1;
+  }
+}

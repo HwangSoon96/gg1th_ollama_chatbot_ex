@@ -1,0 +1,160 @@
+@import './styles/tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  color: var(--ink);
+  background: var(--canvas);
+
+  /* 브라우저는 한국어를 글자 단위로 끊는다 — "저장됩니/다"처럼.
+     어절 단위로 지킨다. 끊을 데가 없는 긴 영문·URL은 개별 규칙의 overflow-wrap이 맡는다. */
+  word-break: keep-all;
+
+  /* 맥에서만 얇아지는 것을 막는다. 윈도우(DirectWrite)는 이 속성을 무시하므로
+     양쪽 두께를 맞추려면 맥 쪽을 굵히는 게 아니라 이 보정을 빼야 한다. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* 윈도우 힌팅은 가는 획을 먹는다. 본문을 450으로 올려 두 OS의 무게를 맞춘다. */
+  font-weight: 450;
+  font-optical-sizing: auto;
+  font-synthesis-weight: none; /* 없는 굵기를 브라우저가 지어내지 못하게 */
+}
+
+/* 화면 높이에 묶어 둔다.
+ * min-height만 주면 대화가 길어질 때 앱 전체가 자라고 html이 대신 스크롤된다.
+ * 그러면 채팅 영역의 overflow가 발동하지 않아 자동 스크롤이 죽고,
+ * 입력창도 화면 밖으로 밀려난다. */
+html,
+body {
+  height: 100%;
+}
+
+#root {
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: var(--lh-tight);
+  color: var(--ink);
+}
+
+p {
+  margin: 0;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* 포커스는 항상 보여야 한다. 마우스 조작 시에만 숨긴다 */
+:focus-visible {
+  outline: 2px solid var(--amber-lamp);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+code,
+pre {
+  font-family: var(--mono);
+  font-weight: 400; /* mono는 본문 보정(450)을 따라가면 뭉친다 */
+}
+
+/* 숫자가 바뀔 때 폭이 흔들리지 않게 (경과 시간, 파라미터 값) */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- 테마 전환 원형 확산 ---
+ *
+ * 색이 한 번에 바뀜면 화면이 눈에 튀다. 누른 지점에서 새 테마가
+ * 원으로 퍼지게 해서 변화의 출발점을 보여준다.
+ * 기본 교차 페이드를 끄고 clip-path로 직접 그린다. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* 이전 화면은 그대로 두고 새 화면만 위에서 열린다 */
+::view-transition-old(root) {
+  z-index: 0;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+  animation: theme-reveal 520ms var(--ease);
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0 at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--reveal-r, 150vmax) at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* 전체 화면이 움직이는 연출은 멀미를 일으키는 대표적인 경우다 */
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

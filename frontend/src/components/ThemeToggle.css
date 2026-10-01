@@ -1,0 +1,52 @@
+/* "다크"/"라이트"는 한글이다. sans, 자간 없음 */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: var(--s1) var(--s2);
+  border-radius: 3px;
+  font-size: var(--t-meta);
+  font-weight: 600;
+  color: var(--ink-faint);
+  transition: color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+
+.theme-toggle:hover {
+  color: var(--ink);
+  background: var(--sunken);
+}
+
+/* 해↔달이 돌면서 바뀜다 */
+.theme-toggle__icon {
+  display: inline-block;
+  animation: theme-spin 280ms var(--ease);
+}
+
+@keyframes theme-spin {
+  from {
+    transform: rotate(-90deg) scale(0.6);
+    opacity: 0;
+  }
+}
+
+.theme-toggle__auto {
+  padding: 0 var(--s1);
+  border-radius: 2px;
+  background: var(--sunken);
+  border: 1px solid var(--line);
+  font-size: 0.625rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle__icon {
+    animation: none;
+  }
+}
+
+@media (max-width: 720px) {
+  /* 좁은 화면에서는 아이콘만. 라벨은 모델명과 자리를 다툰다 */
+  .theme-toggle__label,
+  .theme-toggle__auto {
+    display: none;
+  }
+}

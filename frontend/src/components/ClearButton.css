@@ -1,0 +1,62 @@
+/* 전부 한글 라벨이다. sans, 자간 없음 */
+.clear,
+.clear__yes,
+.clear__no {
+  padding: var(--s1) var(--s2);
+  border-radius: 3px;
+  font-size: var(--t-meta);
+  font-weight: 600;
+  transition: color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+
+.clear {
+  color: var(--ink-faint);
+}
+
+.clear:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--sunken);
+}
+
+.clear:disabled {
+  opacity: 0.35;
+}
+
+/* 묻는 단계가 제자리에서 펼쳐진다. 불끑 나타나면 버튼이 바뀜 것처럼 보인다 */
+.clear__confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  animation: clear-expand 160ms var(--ease);
+}
+
+@keyframes clear-expand {
+  from {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clear__confirm {
+    animation: none;
+  }
+}
+
+.clear__ask {
+  font-size: var(--t-meta);
+  color: var(--ink-soft);
+}
+
+.clear__yes {
+  color: var(--alarm);
+  background: var(--alarm-glow);
+}
+
+.clear__no {
+  color: var(--ink-faint);
+}
+
+.clear__no:hover {
+  color: var(--ink);
+}

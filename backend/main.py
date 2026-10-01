@@ -3,6 +3,7 @@ import uvicorn
 # ollama_chat 모듈의 call_ollama_chat 함수 로딩
 from ollama_chat import call_ollama_chat, get_ollama_models
 from schema import ChatRequest, ChatResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 
 # FastAPI 객체 생성
@@ -12,17 +13,26 @@ app = FastAPI(
     version="0.1.0",
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # /chat API 구현
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
-    # 비즈니스 로직처리
+    # # 비즈니스 로직처리
     # return_value = {
     #     "model": "aaaa",
     #     "ai_message": "ai_message",
     #     "걸린시간" : "걸린시간"
     # }
-    try:
+    # return return_value
 
+    try:
       return_value = call_ollama_chat(
               message=request.message,
               model=request.model,
@@ -30,10 +40,9 @@ def chat(request: ChatRequest):
               temperature=request.temperature,
               top_p=request.top_p,
               num_predict=request.num_predict,
-          )
-
-
+      )
       return return_value
+    
     except Exception as exc:
       raise HTTPException(
           status_code=500,

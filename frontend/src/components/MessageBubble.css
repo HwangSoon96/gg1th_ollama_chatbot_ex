@@ -1,0 +1,125 @@
+.bubble {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* 사용자: 말풍선 대신 호박색 세로선으로 표시한다.
+   내가 친 문장이 인용부호처럼 서 있고, 기계의 답은 본문으로 흐른다.
+   말풍선 두 개를 나란히 두면 긴 답변에서 읽기 나쁘다. */
+.bubble--user {
+  align-self: flex-end;
+  max-width: min(52ch, 88%);
+  padding: var(--s2) 0 var(--s2) var(--s4);
+  border-left: 2px solid var(--amber-edge);
+  color: var(--ink-soft);
+}
+
+.bubble--assistant {
+  align-self: stretch;
+  max-width: var(--measure);
+}
+
+/* 기다리던 계기 상자가 답변으로 바뀌는 순간.
+   그냥 퉝 바뀜면 무엇이 바뀌었는지 눈이 따라가지 못한다.
+   40초를 기다렸는데 답이 언제 왔는지 모르면 허무하다 */
+.bubble--arrived {
+  animation: bubble-arrive 340ms var(--ease);
+}
+
+@keyframes bubble-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble--arrived {
+    animation: none;
+  }
+}
+
+.bubble--error {
+  padding: var(--s3) var(--s4);
+  border-left: 2px solid var(--alarm);
+  background: var(--alarm-glow);
+  border-radius: 0 var(--r-panel) var(--r-panel) 0;
+}
+
+/* 줄바꿈·인라인 코드는 MessageContent가 처리한다 */
+.bubble__error-text {
+  color: var(--ink);
+}
+
+/* 한글 라벨 — sans, 자간 없음 */
+.bubble__retry {
+  margin-top: var(--s3);
+  padding: var(--s1) var(--s3);
+  border: 1px solid var(--alarm);
+  border-radius: var(--r-control);
+  font-size: var(--t-meta);
+  font-weight: 600;
+  color: var(--alarm);
+  transition: background var(--fast) var(--ease);
+}
+
+.bubble__retry:hover {
+  background: var(--alarm-glow);
+}
+
+/* 메타는 계기 눈금이다. mono로 쓰고 소요 시간에 호박색을 준다 */
+.bubble__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-top: var(--s3);
+  padding-top: var(--s2);
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: var(--t-micro);
+  color: var(--ink-faint);
+}
+
+.bubble__model {
+  letter-spacing: 0.01em;
+}
+
+.bubble__time {
+  color: var(--amber);
+}
+
+.bubble__action {
+  margin-left: auto;
+  padding: var(--s1) var(--s2);
+  border-radius: 3px;
+  font-family: var(--sans);
+  font-size: var(--t-meta);
+  font-weight: 600;
+  color: var(--ink-faint);
+  /* 항상 보이면 시끄럽고 hover에만 보이면 터치에서 못 찾는다.
+     연하게 항상 두고 hover에서 진해진다 */
+  transition: color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+
+.bubble__action:hover {
+  color: var(--ink);
+  background: var(--sunken);
+}
+
+/* 복사되었다는 것을 글자만 바꿔 알리면 놓치기 쉽다. 한 번 튀게 한다 */
+.bubble__action--done {
+  color: var(--amber);
+  animation: copy-pop 220ms var(--ease);
+}
+
+@keyframes copy-pop {
+  40% {
+    transform: scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble__action--done {
+    animation: none;
+  }
+}

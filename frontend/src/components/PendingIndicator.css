@@ -1,0 +1,78 @@
+/* 대기 표시 — 이 앱에서 가장 자주 보게 되는 화면이다.
+ *
+ * 로컬 7B는 첫 토큰까지 수십 초가 걸리고 스트리밍도 없다.
+ * 그 시간을 숨기면 "멈춘 앱"이 되고, 드러내면 "일하는 기계"가 된다.
+ * 그래서 초를 크게 세운다. 스피너는 얼어붙어도 똑같이 돌지만 숫자는 거짓말을 못 한다. */
+
+.pending {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  padding: var(--s4);
+  border: 1px solid var(--amber-edge);
+  border-radius: var(--r-panel);
+  background: var(--amber-glow);
+}
+
+.pending__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+}
+
+/* 달아오른 필라멘트 */
+.pending__pulse {
+  width: 7px;
+  height: 7px;
+  align-self: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--amber-lamp);
+  box-shadow: 0 0 8px var(--amber-edge);
+  animation: pending-pulse 1.3s var(--ease) infinite;
+}
+
+/* 모델명은 라턴이다(exaone3.5:7.8b). 여긴 mono가 맞다 */
+.pending__label {
+  font-family: var(--mono);
+  font-size: var(--t-meta);
+  font-weight: 600;
+  color: var(--amber);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 계기판의 주 수치 */
+.pending__time {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: var(--t-lead);
+  font-weight: 700;
+  letter-spacing: var(--track-display);
+  color: var(--amber);
+}
+
+.pending__hint {
+  font-size: var(--t-meta);
+  color: var(--ink-soft);
+}
+
+@keyframes pending-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 모션을 끈 사용자에게는 깜빡임 대신 고정된 점을 준다.
+   index.css의 전역 규칙은 duration만 0으로 만들어서 0.25에 멈춘다 */
+@media (prefers-reduced-motion: reduce) {
+  .pending__pulse {
+    animation: none;
+    opacity: 1;
+  }
+}

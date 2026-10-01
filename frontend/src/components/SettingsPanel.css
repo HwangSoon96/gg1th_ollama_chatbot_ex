@@ -1,0 +1,119 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+  padding: var(--s4) var(--s4) var(--s6);
+}
+
+.settings__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding-bottom: var(--s2);
+  border-bottom: 1px solid var(--line);
+}
+
+/* 한글 라벨 — sans, 자간 없음 */
+.settings__title {
+  font-size: var(--t-meta);
+  font-weight: 700;
+  color: var(--ink-faint);
+}
+
+.settings__reset {
+  font-size: var(--t-meta);
+  font-weight: 600;
+  color: var(--ink-faint);
+  padding: var(--s1) var(--s2);
+  border-radius: 3px;
+  transition: color var(--fast) var(--ease), background var(--fast) var(--ease);
+}
+
+.settings__reset:hover:not(:disabled) {
+  color: var(--amber);
+  background: var(--amber-glow);
+}
+
+.settings__reset:disabled {
+  opacity: 0.35;
+}
+
+.settings__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+
+.settings__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+}
+
+.settings__label {
+  font-size: var(--t-meta);
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+.settings__select,
+.settings__input,
+.settings__textarea {
+  width: 100%;
+  padding: var(--s2) var(--s3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  background: var(--canvas);
+  font-size: var(--t-small);
+  transition: border-color var(--fast) var(--ease);
+}
+
+.settings__select:hover,
+.settings__input:hover,
+.settings__textarea:hover {
+  border-color: var(--line-strong);
+}
+
+/* 현재 걸린 모델은 이 패널에서 가장 중요한 값이다 */
+.settings__select,
+.settings__input {
+  font-family: var(--mono);
+  font-size: var(--t-meta);
+  color: var(--ink);
+}
+
+.settings__select {
+  cursor: pointer;
+}
+
+.settings__textarea {
+  resize: none;
+  line-height: 1.6;
+}
+
+.settings__hint {
+  font-size: var(--t-micro);
+  color: var(--ink-faint);
+  line-height: 1.5;
+}
+
+/* 지금 상태가 사용자의 예상과 다를 수 있을 때만 쓴다 */
+.settings__hint--warn {
+  color: var(--amber);
+}
+
+.settings__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  font-size: var(--t-small);
+  cursor: pointer;
+}
+
+.settings__toggle input {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--amber-fill);
+  cursor: pointer;
+}
